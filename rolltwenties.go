@@ -1,4 +1,4 @@
-package dieroller
+package main
 
 import (
 	"fmt"

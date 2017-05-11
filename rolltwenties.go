@@ -1,4 +1,4 @@
-package main
+package dieroller
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func main() {
+func rolltwenties() {
 	var list [100]int64
 	var sides = int64(20)
 	rand.Seed(time.Now().UnixNano())

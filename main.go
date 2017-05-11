@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"os"
+	"regexp"
 )
 
 func getParameters() (*uint32, *uint32, *string, *uint32, *uint32, *bool) {
@@ -11,13 +12,13 @@ func getParameters() (*uint32, *uint32, *string, *uint32, *uint32, *bool) {
 		dieroller                     = kingpin.New("dieroller", "A roll playing game die roller.")
 		diceFlag                      = dieroller.Flag("dice", "Number of dice to roll. Must be greater than 0.").Default("1").Short('d').Uint32()
 		sidesFlag                     = dieroller.Flag("sides", "Number of sides per die. Must be greater than 0.").Default("20").Short('s').Uint32()
-		modifierFlag                  = dieroller.Flag("modifier", "Modifier to the rolles.  The first character can optionally be one of +, -, or * followed by a number.  If the +, -, or * are missing, + is assumed.").Default("").Short('m').String()
+		modifierFlag                  = dieroller.Flag("modifier", "Modifier to the rolls.  The first character can optionally be one of 'a', 'm', or 's' followed by a number. These indicate addition, multiplication, and subtraction respectively. If the a, m, or s are missing, addition is assumed.").Default("").Short('m').String()
 		keepFlag                      = dieroller.Flag("keep", "Number of rolls to keep. Must be greater than 0 and less than or equal to number of dice.").Default("1").Short('k').Uint32()
 		iterationsFlag                = dieroller.Flag("iterations", "Number of times to repeat the same rolls. Must be greater than 0.").Default("1").Short('i').Uint32()
 		verbose                       = dieroller.Flag("verbose", "Display additional information.").Default("false").Short('v').Bool()
 		diceArg                       = dieroller.Arg("dice", "Number of dice to roll. Must be greater than 0. (default to 1)").Uint32()
 		sidesArg                      = dieroller.Arg("sides", "Number of sides per die. Must be greater than 0. (default to 20)").Uint32()
-		modifierArg                   = dieroller.Arg("modifier", "Modifier to the rolles.  The first character can optionally be one of +, -, or * followed by a number.  If the +, -, or * are missing, + is assumed. (default to no modifier)").String()
+		modifierArg                   = dieroller.Arg("modifier", "Modifier to the rolls.  The first character can optionally be one of 'a', 'm', or 's' followed by a number. These indicate addition, multiplication, and subtraction respectively. If the a, m, or s are missing, addition is assumed. (default to no modifier)").String()
 		keepArg                       = dieroller.Arg("keep", "Number of rolls to keep. Must be greater than 0 and less than or equal to number of dice. (default to number of dice)").Uint32()
 		iterationsArg                 = dieroller.Arg("iterations", "Number of times to repeat the same rolls. Must be greater than 0. (default to 1)").Uint32()
 		dice, sides, keep, iterations *uint32
@@ -50,7 +51,11 @@ func getParameters() (*uint32, *uint32, *string, *uint32, *uint32, *bool) {
 		iterations = iterationsArg
 	}
 	if *keep > *dice {
-		dieroller.FatalUsage("\nError: keep (%v) must be <= dice (%v)\n", *keep, *dice)
+		dieroller.FatalUsage("keep (%v) must be <= dice (%v).\n", *keep, *dice)
+	}
+	match, _ := regexp.MatchString("\\A[amsAMS]?\\d+\\z|\\A\\z", *modifier)
+	if !match {
+		dieroller.FatalUsage("modifier (%v) is invalid.\n", *modifier)
 	}
 
 	return dice, sides, modifier, keep, iterations, verbose

@@ -6,7 +6,7 @@ import (
 	"regexp"
 )
 
-func getParameters() (*uint32, *uint32, *string, *uint32, *uint32, *bool) {
+func GetParameters() (*uint32, *uint32, *string, *uint32, *uint32, *bool) {
 	var (
 		dieroller                     = kingpin.New("dieroller", "A roll playing game die roller.")
 		diceFlag                      = dieroller.Flag("dice", "Number of dice to roll. Must be greater than 0.").Default("1").Short('d').Uint32()
@@ -52,7 +52,7 @@ func getParameters() (*uint32, *uint32, *string, *uint32, *uint32, *bool) {
 	if *keep > *dice {
 		dieroller.FatalUsage("keep (%v) must be <= dice (%v).\n", *keep, *dice)
 	}
-	match, _ := regexp.MatchString("\\A[amsAMS]?\\d+\\z|\\A\\z", *modifier)
+	match, _ := regexp.MatchString("\\A([amsAMS]?)(\\d+)\\z|\\A\\z", *modifier)
 	if !match {
 		dieroller.FatalUsage("modifier (%v) is invalid.\n", *modifier)
 	}

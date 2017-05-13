@@ -12,7 +12,7 @@ func GetParameters() (*uint32, *uint32, *string, *uint32, *uint32, *bool) {
 		diceFlag                      = dieroller.Flag("dice", "Number of dice to roll. Must be greater than 0.").Default("1").Short('d').Uint32()
 		sidesFlag                     = dieroller.Flag("sides", "Number of sides per die. Must be greater than 0.").Default("20").Short('s').Uint32()
 		modifierFlag                  = dieroller.Flag("modifier", "Modifier to the rolls.  The first character can optionally be one of 'a', 'm', or 's' followed by a number. These indicate addition, multiplication, and subtraction respectively. If the a, m, or s are missing, addition is assumed.").Default("").Short('m').String()
-		keepFlag                      = dieroller.Flag("keep", "Number of rolls to keep. Must be greater than 0 and less than or equal to number of dice.").Default("1").Short('k').Uint32()
+		keepFlag                      = dieroller.Flag("keep", "Number of rolls to keep. Must be greater than 0 and less than or equal to number of dice.").Short('k').Uint32()
 		iterationsFlag                = dieroller.Flag("iterations", "Number of times to repeat the same rolls. Must be greater than 0.").Default("1").Short('i').Uint32()
 		verbose                       = dieroller.Flag("verbose", "Display additional information.").Default("false").Short('v').Bool()
 		diceArg                       = dieroller.Arg("dice", "Number of dice to roll. Must be greater than 0. (default to 1)").Uint32()
@@ -35,7 +35,11 @@ func GetParameters() (*uint32, *uint32, *string, *uint32, *uint32, *bool) {
 		sides = sidesArg
 	}
 	if *keepArg == uint32(0) {
-		keep = keepFlag
+		if *keepFlag == uint32(0) {
+			keep = dice
+		} else {
+			keep = keepFlag
+		}
 	} else {
 		keep = keepArg
 	}

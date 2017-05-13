@@ -37,21 +37,20 @@ func DieModifierParse(value string) *DieModifier {
 		modtype := DmtFromString(value)
 		re1, _ := regexp.Compile(DieModifierRegex)
 		matches := re1.FindStringSubmatch(value)
-		u, _ := strconv.ParseUint(matches[1], 10, 32)
-		for k, v := range matches {
-			fmt.Printf("%d. %s\n", k, v)
-		}
+		u, _ := strconv.ParseUint(matches[2], 10, 32)
 		return &DieModifier{modtype, uint32(u)}
 	}
 }
 
 func (dm DieModifier) String() string {
-	switch dm.ModType {
-	case DieModifierTypeAdd:
-		return fmt.Sprintf("-%d", dm.Amount)
-	case DieModifierTypeMultiply:
+	switch {
+	case dm.Amount == 0 || dm.ModType == DieModifierTypeNull:
+		return ""
+	case dm.ModType == DieModifierTypeAdd:
+		return fmt.Sprintf("+%d", dm.Amount)
+	case dm.ModType == DieModifierTypeMultiply:
 		return fmt.Sprintf("*%d", dm.Amount)
-	case DieModifierTypeSubtract:
+	case dm.ModType == DieModifierTypeSubtract:
 		return fmt.Sprintf("-%d", dm.Amount)
 	default:
 		return ""

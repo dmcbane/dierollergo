@@ -14,7 +14,7 @@ type DieModifier struct {
 }
 
 func DmtFromString(value string) DieModifierType {
-	if value != "" {
+	if value == "" {
 		return DieModifierTypeAdd
 	} else {
 		switch value[0] {
@@ -43,16 +43,10 @@ func DieModifierParse(value string) *DieModifier {
 }
 
 func (dm DieModifier) String() string {
-	switch {
-	case dm.Amount == 0 || dm.ModType == DieModifierTypeNull:
+	t := dm.ModType.String()
+	if t == "" || dm.Amount == 0 {
 		return ""
-	case dm.ModType == DieModifierTypeAdd:
-		return fmt.Sprintf("+%d", dm.Amount)
-	case dm.ModType == DieModifierTypeMultiply:
-		return fmt.Sprintf("*%d", dm.Amount)
-	case dm.ModType == DieModifierTypeSubtract:
-		return fmt.Sprintf("-%d", dm.Amount)
-	default:
-		return ""
+	} else {
+		return fmt.Sprintf("%s%d", t, dm.Amount)
 	}
 }

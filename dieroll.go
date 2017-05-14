@@ -66,6 +66,7 @@ func (dr *DieRoll) Roll() DieRollResult {
 	rand.Seed(time.Now().UnixNano())
 	for i := range rolls {
 		rolls[i] = uint32(rand.Int63n(int64(dr.Sides()))) + uint32(1)
+		rand.Seed(rand.Int63())
 	}
 	// sort them from highest to lowest
 	// because Less for DieRolls is defined in reverse (>)

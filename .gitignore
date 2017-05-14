@@ -25,3 +25,6 @@ _testmain.go
 
 # backups
 *~
+
+# ignore generated output
+out.csv

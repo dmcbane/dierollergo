@@ -1,4 +1,4 @@
-package main
+package dierollerpkg
 
 import (
 	"fmt"
@@ -45,12 +45,13 @@ func (dr *DieRoll) History() []DieRollResult {
 }
 
 // Last result returned by die roller
-func (dr *DieRoll) LastRoll() DieRollResult {
-	return dr.history[len(dr.history)-1]
+func (dr *DieRoll) LastRoll() *DieRollResult {
+	if len(dr.history) == 0 {
+		return nil
+	} else {
+		return &dr.history[len(dr.history)-1]
+	}
 }
-
-// alias for LastRoll
-var Result = (*DieRoll).LastRoll
 
 // Appender
 func (dr *DieRoll) AddHistory(drr DieRollResult) {
@@ -105,7 +106,7 @@ func (dr *DieRoll) standardstring(verbose bool) string {
 	}
 	m := fmt.Sprintf("%v", dr.Modifier())
 	r := ""
-	if verbose {
+	if verbose && dr.LastRoll() != nil {
 		r = fmt.Sprintf(" (%s)", dr.LastRoll().Rolls)
 	}
 	return strings.Trim(fmt.Sprintf("%s%s%s%s", d, k, m, r), "")

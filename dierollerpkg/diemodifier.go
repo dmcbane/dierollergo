@@ -1,4 +1,4 @@
-package main
+package dierollerpkg
 
 import (
 	"fmt"
@@ -38,6 +38,9 @@ func DieModifierParse(value string) *DieModifier {
 		re1, _ := regexp.Compile(DieModifierRegex)
 		matches := re1.FindStringSubmatch(value)
 		u, _ := strconv.ParseUint(matches[2], 10, 32)
+		if u != 0 && modtype == DieModifierTypeNull {
+			modtype = DieModifierTypeAdd
+		}
 		return &DieModifier{modtype, uint32(u)}
 	}
 }

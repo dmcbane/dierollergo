@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/dmcbane/dierollergo/dierollerpkg"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"os"
 	"regexp"
@@ -56,7 +57,7 @@ func GetParameters() (*uint32, *uint32, *string, *uint32, *uint32, *bool) {
 	if *keep > *dice {
 		dieroller.FatalUsage("keep (%v) must be <= dice (%v).\n", *keep, *dice)
 	}
-	match, _ := regexp.MatchString("\\A([amsAMS]?)(\\d+)\\z|\\A\\z", *modifier)
+	match, _ := regexp.MatchString(dierollerpkg.DieModifierRegex, *modifier)
 	if !match {
 		dieroller.FatalUsage("modifier (%v) is invalid.\n", *modifier)
 	}

@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/dmcbane/dierollergo/pkg"
+	"github.com/dmcbane/dierollergo/dierollerpkg"
 )
 
 func main() {
 	var dice, sides, modifier, keep, iterations, verbose = GetParameters()
 
-	dieroll := dieroller.NewDieRoll(*dice, *sides, *modifier, *keep)
+	dieroll := dierollerpkg.NewDieRoll(*dice, *sides, *modifier, *keep)
 
 	for i := uint32(0); i < *iterations; i++ {
 		dieroll.Roll()

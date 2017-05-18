@@ -13,23 +13,6 @@ type DieModifier struct {
 	Amount  uint32
 }
 
-func DmtFromString(value string) DieModifierType {
-	if value == "" {
-		return DieModifierTypeAdd
-	} else {
-		switch value[0] {
-		case '+', 'a':
-			return DieModifierTypeAdd
-		case '*', 'm':
-			return DieModifierTypeMultiply
-		case '-', 's':
-			return DieModifierTypeSubtract
-		default:
-			return DieModifierTypeNull
-		}
-	}
-}
-
 func DieModifierParse(value string) *DieModifier {
 	if value == "" {
 		return new(DieModifier)
@@ -37,7 +20,11 @@ func DieModifierParse(value string) *DieModifier {
 		modtype := DmtFromString(value)
 		re1, _ := regexp.Compile(DieModifierRegex)
 		matches := re1.FindStringSubmatch(value)
-		u, _ := strconv.ParseUint(matches[2], 10, 32)
+		var u uint64
+		if len(matches) != 3 {
+			return new(DieModifier)
+		}
+		u, _ = strconv.ParseUint(matches[2], 10, 32)
 		if u != 0 && modtype == DieModifierTypeNull {
 			modtype = DieModifierTypeAdd
 		}
@@ -46,10 +33,9 @@ func DieModifierParse(value string) *DieModifier {
 }
 
 func (dm DieModifier) String() string {
-	t := dm.ModType.String()
-	if t == "" || dm.Amount == 0 {
+	if dm.ModType == DieModifierTypeNull && dm.Amount == 0 {
 		return ""
 	} else {
-		return fmt.Sprintf("%s%d", t, dm.Amount)
+		return fmt.Sprintf("%v%v", dm.ModType, dm.Amount)
 	}
 }

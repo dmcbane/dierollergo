@@ -64,7 +64,7 @@ func TestLess(t *testing.T) {
 	}
 }
 
-func TestString(t *testing.T) {
+func TestDieRollsString(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping string test in short mode.")
 	}

@@ -47,3 +47,18 @@ func IsValidPurchaseSpecification(value string) bool {
 	match, _ := regexp.MatchString(GenerationTypePurchaseRegex, value)
 	return match
 }
+
+func ParsePoolSpecification(value string) *[]int {
+	result := make([]int, 6)
+	if IsValidPoolSpecification(value) {
+		re1, _ := regexp.Compile(GenerationTypePoolRegex)
+		matches := re1.FindStringSubmatch(value)
+		for i, v := range matches {
+			if i == 0 {
+				continue
+			}
+			result[i-1], _ = strconv.Atoi(v)
+		}
+	}
+	return &result
+}

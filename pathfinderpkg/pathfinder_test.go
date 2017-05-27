@@ -82,11 +82,8 @@ func TestSumCostOfAbilities(t *testing.T) {
 		testAbilityFunctionOverRange(t, hi, lo, AbilityCost, SumCostOfAbilities)
 	} else {
 		t.Run("Full", func(t *testing.T) {
-			t.Run("1", func(t *testing.T) { testAbilityFunctionOverRange(t, 9, 1, AbilityCost, SumCostOfAbilities) })
-			t.Run("2", func(t *testing.T) { testAbilityFunctionOverRange(t, 18, 10, AbilityCost, SumCostOfAbilities) })
-			t.Run("3", func(t *testing.T) { testAbilityFunctionOverRange(t, 27, 19, AbilityCost, SumCostOfAbilities) })
-			t.Run("4", func(t *testing.T) { testAbilityFunctionOverRange(t, 36, 28, AbilityCost, SumCostOfAbilities) })
-			t.Run("5", func(t *testing.T) { testAbilityFunctionOverRange(t, 46, 37, AbilityCost, SumCostOfAbilities) })
+			t.Run("1", func(t *testing.T) { testAbilityFunctionOverRange(t, 24, 1, AbilityCost, SumCostOfAbilities) })
+			t.Run("2", func(t *testing.T) { testAbilityFunctionOverRange(t, 46, 24, AbilityCost, SumCostOfAbilities) })
 		})
 	}
 }
@@ -115,18 +112,9 @@ func TestSumModifiersFromAbilities(t *testing.T) {
 		testAbilityFunctionOverRange(t, hi, lo, AbilityModifier, SumModifiersFromAbilities)
 	} else {
 		t.Run("Full", func(t *testing.T) {
-			t.Run("1", func(t *testing.T) { testAbilityFunctionOverRange(t, 9, 1, AbilityModifier, SumModifiersFromAbilities) })
+			t.Run("1", func(t *testing.T) { testAbilityFunctionOverRange(t, 24, 1, AbilityModifier, SumModifiersFromAbilities) })
 			t.Run("2", func(t *testing.T) {
-				testAbilityFunctionOverRange(t, 18, 10, AbilityModifier, SumModifiersFromAbilities)
-			})
-			t.Run("3", func(t *testing.T) {
-				testAbilityFunctionOverRange(t, 27, 19, AbilityModifier, SumModifiersFromAbilities)
-			})
-			t.Run("4", func(t *testing.T) {
-				testAbilityFunctionOverRange(t, 36, 28, AbilityModifier, SumModifiersFromAbilities)
-			})
-			t.Run("5", func(t *testing.T) {
-				testAbilityFunctionOverRange(t, 46, 37, AbilityModifier, SumModifiersFromAbilities)
+				testAbilityFunctionOverRange(t, 46, 24, AbilityModifier, SumModifiersFromAbilities)
 			})
 		})
 	}

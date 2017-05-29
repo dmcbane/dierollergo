@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sync"
 )
 
 func main() {
@@ -10,13 +11,21 @@ func main() {
 	if verbose {
 		fmt.Printf("gentype: %v\noptions: %v\n", gentype, options)
 	}
-
-	for i := uint32(0); i < number; i++ {
+	var wg sync.WaitGroup
+	for i := 0; i < number; i++ {
+		wg.Add(1)
 		if verbose {
-			cma := fn()
-			fmt.Printf("%v c: %v m: %v\n", cma.Abils, cma.Cost, cma.Modifier)
+			go func() {
+				defer wg.Done()
+				cma := fn()
+				fmt.Printf("%v c: %v m: %v\n", cma.Abils, cma.Cost, cma.Modifier)
+			}()
 		} else {
-			fmt.Println(fn().Abils)
+			go func() {
+				defer wg.Done()
+				fmt.Println(fn().Abils)
+			}()
 		}
 	}
+	wg.Wait()
 }

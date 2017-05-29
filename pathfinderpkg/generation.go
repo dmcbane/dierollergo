@@ -162,8 +162,8 @@ func getPoolGenerator(options string) func() CostModifierAbilities {
 
 func getPurchaseGenerator(options string) func() CostModifierAbilities {
 	points := PurchasePointsFromCampaignType(options)
-	// make the slice maximum size
-	legalAbilities := make(CostModifierAbilitiesByModifier, 12^6)
+	// make the slice maximum size 12^6
+	legalAbilities := make(CostModifierAbilitiesByModifier, 2985984)
 	count := 0
 	for i1 := 18; i1 >= 7; i1-- {
 		for i2 := 18; i2 >= 7; i2-- {
@@ -172,9 +172,10 @@ func getPurchaseGenerator(options string) func() CostModifierAbilities {
 					for i5 := 18; i5 >= 7; i5-- {
 						for i6 := 18; i6 >= 7; i6-- {
 							abils := Abilities{i1, i2, i3, i4, i5, i6}
-							cost := abils.SumCosts()
-							if cost <= points {
-								legalAbilities[count] = CostModifierAbilities{cost, abils.SumModifiers(), abils}
+							sc := abils.SumCosts()
+							sm := abils.SumModifiers()
+							if sc <= points {
+								legalAbilities[count] = CostModifierAbilities{sc, sm, abils}
 								count++
 							}
 						}
@@ -185,7 +186,7 @@ func getPurchaseGenerator(options string) func() CostModifierAbilities {
 	}
 	// delete abilities slots not used
 	for i, v := range legalAbilities {
-		if v.Abils[0] == 0 {
+		if v.Abils == nil {
 			legalAbilities = legalAbilities[:i]
 			break
 		}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"github.com/dmcbane/dierollergo/pathfinderpkg"
 	"log"
@@ -13,6 +14,10 @@ func main() {
 	top := max - 1
 	arr := make([]string, 8)
 	idx := 0
+
+	verbose := flag.Bool("v", false, "Verbose output.")
+	flag.Parse()
+
 	f, err := os.Create("C:\\Users\\dmcbane\\GoogleDrive\\dev\\go\\src\\github.com\\dmcbane\\dierollergo\\all_ability_scores\\out.csv")
 	if err != nil {
 		log.Fatalln("error writing record to csv:", err)
@@ -23,6 +28,9 @@ func main() {
 	w := csv.NewWriter(f)
 	for i := top; i >= 0; i-- {
 		for j := top; j >= 0; j-- {
+			if *verbose {
+				fmt.Printf("[%v,%v,%v,%v,%v,%v]\n", i, j, top, top, top, top)
+			}
 			for k := top; k >= 0; k-- {
 				for m := top; m >= 0; m-- {
 					for n := top; n >= 0; n-- {
@@ -51,6 +59,7 @@ func main() {
 						}
 					}
 				}
+
 			}
 		}
 	}

@@ -9,15 +9,15 @@ import (
 )
 
 type DieRoll struct {
-	dice     uint32
-	sides    uint32
+	dice     int
+	sides    int
 	modifier DieModifier
-	keep     uint32
+	keep     int
 	history  []DieRollResult
 }
 
 // constructor
-func NewDieRoll(dice, sides uint32, modifier string, keep uint32) *DieRoll {
+func NewDieRoll(dice, sides int, modifier string, keep int) *DieRoll {
 	return &DieRoll{
 		dice:     dice,
 		sides:    sides,
@@ -28,16 +28,16 @@ func NewDieRoll(dice, sides uint32, modifier string, keep uint32) *DieRoll {
 }
 
 // getters
-func (dr *DieRoll) Dice() uint32 {
+func (dr *DieRoll) Dice() int {
 	return dr.dice
 }
-func (dr *DieRoll) Sides() uint32 {
+func (dr *DieRoll) Sides() int {
 	return dr.sides
 }
 func (dr *DieRoll) Modifier() DieModifier {
 	return dr.modifier
 }
-func (dr *DieRoll) Keep() uint32 {
+func (dr *DieRoll) Keep() int {
 	return dr.keep
 }
 func (dr *DieRoll) History() []DieRollResult {
@@ -66,26 +66,26 @@ func (dr *DieRoll) Roll() DieRollResult {
 	rolls := make(DieRolls, dr.Dice())
 	rand.Seed(time.Now().UnixNano())
 	for i := range rolls {
-		rolls[i] = uint32(rand.Int63n(int64(dr.Sides()))) + uint32(1)
+		rolls[i] = rand.Intn(dr.Sides()) + 1
 		rand.Seed(rand.Int63())
 	}
 	// sort them from highest to lowest
 	// because Less for DieRolls is defined in reverse (>)
 	sort.Sort(rolls)
 	// sum the highest keep rolls
-	sum := int64(0)
+	sum := 0
 	kept := rolls[0:dr.Keep()]
 	for _, v := range kept {
-		sum += int64(v)
+		sum += v
 	}
 	// apply the modifier
 	switch dr.Modifier().ModType {
 	case DieModifierTypeAdd:
-		sum += int64(dr.Modifier().Amount)
+		sum += dr.Modifier().Amount
 	case DieModifierTypeMultiply:
-		sum *= int64(dr.Modifier().Amount)
+		sum *= dr.Modifier().Amount
 	case DieModifierTypeSubtract:
-		sum -= int64(dr.Modifier().Amount)
+		sum -= dr.Modifier().Amount
 	}
 	result := DieRollResult{sum, kept}
 	dr.AddHistory(result)

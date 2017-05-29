@@ -10,7 +10,7 @@ const DieModifierRegex = "\\A([amsAMS+*-]?)(\\d+)\\z|\\A\\z"
 
 type DieModifier struct {
 	ModType DieModifierType
-	Amount  uint32
+	Amount  int
 }
 
 func DieModifierParse(value string) *DieModifier {
@@ -20,15 +20,14 @@ func DieModifierParse(value string) *DieModifier {
 		modtype := DmtFromString(value)
 		re1, _ := regexp.Compile(DieModifierRegex)
 		matches := re1.FindStringSubmatch(value)
-		var u uint64
 		if len(matches) != 3 {
 			return new(DieModifier)
 		}
-		u, _ = strconv.ParseUint(matches[2], 10, 32)
+		u, _ := strconv.ParseInt(matches[2], 10, 32)
 		if u != 0 && modtype == DieModifierTypeNull {
 			modtype = DieModifierTypeAdd
 		}
-		return &DieModifier{modtype, uint32(u)}
+		return &DieModifier{modtype, int(u)}
 	}
 }
 

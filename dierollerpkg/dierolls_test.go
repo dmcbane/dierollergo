@@ -31,19 +31,19 @@ func TestSwap(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping length test in short mode.")
 	}
-	dr := DieRolls{uint32(1), uint32(2), uint32(3)}
+	dr := DieRolls{1, 2, 3}
 	dr.Swap(0, 1)
-	if dr[0] != uint32(2) {
+	if dr[0] != 2 {
 		t.Error("Expected dr[0] to be 2, got ", dr[0])
 	}
-	if dr[1] != uint32(1) {
+	if dr[1] != 1 {
 		t.Error("Expected dr[1] to be 1, got ", dr[1])
 	}
 	dr.Swap(1, 2)
-	if dr[1] != uint32(3) {
+	if dr[1] != 3 {
 		t.Error("Expected dr[1] to be 3, got ", dr[1])
 	}
-	if dr[2] != uint32(1) {
+	if dr[2] != 1 {
 		t.Error("Expected dr[2] to be 1, got ", dr[2])
 	}
 }
@@ -52,7 +52,7 @@ func TestLess(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping less test in short mode.")
 	}
-	dr := DieRolls{uint32(1), uint32(2), uint32(3)}
+	dr := DieRolls{1, 2, 3}
 	// note that Less is actually implemented as Greater to provide a reverse sort
 	result := dr.Less(0, 1)
 	if result {
@@ -68,7 +68,7 @@ func TestDieRollsString(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping string test in short mode.")
 	}
-	dr := DieRolls{uint32(1), uint32(2), uint32(3)}
+	dr := DieRolls{1, 2, 3}
 	// note that Less is actually implemented as Greater to provide a reverse sort
 	result := dr.String()
 	if result != "1,2,3" {

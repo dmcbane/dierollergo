@@ -3,7 +3,7 @@ package dierollerpkg
 import "fmt"
 
 type DieRollResult struct {
-	Result int64
+	Result int
 	Rolls  DieRolls
 }
 

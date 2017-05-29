@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-type DieRolls []uint32
+type DieRolls []int
 
 func (dr DieRolls) Len() int           { return len(dr) }
 func (dr DieRolls) Swap(i, j int)      { dr[i], dr[j] = dr[j], dr[i] }

@@ -18,6 +18,7 @@ type DieRoll struct {
 
 // constructor
 func NewDieRoll(dice, sides int, modifier string, keep int) *DieRoll {
+	rand.Seed(time.Now().UnixNano())
 	return &DieRoll{
 		dice:     dice,
 		sides:    sides,
@@ -64,7 +65,6 @@ func (dr *DieRoll) AddHistory(drr DieRollResult) {
 func (dr *DieRoll) Roll() DieRollResult {
 	// generate the rolls
 	rolls := make(DieRolls, dr.Dice())
-	rand.Seed(time.Now().UnixNano())
 	for i := range rolls {
 		rolls[i] = rand.Intn(dr.Sides()) + 1
 		rand.Seed(rand.Int63())

@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func GetParameters() (pathfinderpkg.GenerationType, string, uint32, bool) {
+func GetParameters() (pathfinderpkg.GenerationType, string, int, bool) {
 	var (
 		pathfinder = kingpin.New("pathfinder", "Generate Pathfinder character abilities.")
 		classic    = pathfinder.Flag("classic", "The classic method: 3D6 per ability.").Default("false").Short('c').Bool()
@@ -14,7 +14,7 @@ func GetParameters() (pathfinderpkg.GenerationType, string, uint32, bool) {
 		heroic     = pathfinder.Flag("heroic", "The heroic method: 2D6 plus 6 per ability.").Default("false").Short('r').Bool()
 		pool       = pathfinder.Flag("pool", "The pool method: 24D6 for all 6 abilities. The parameter specifies how many dice are assigned to each ability as follows: 3/3/3/3/3/9 with a minimum of 3 dice per ability.").Default("").Short('l').String()
 		purchase   = pathfinder.Flag("purchase", "The purchase method: parameters are set according to cost. The parameter specifies the purchase type as follows: low, standard, high, and epic fantasy which provides 10, 15, 20, and 25 purchase points respectively.").Default("").Short('p').String()
-		number     = pathfinder.Flag("number", "Number of characters to roll. Must be greater than 0.").Default("1").Short('n').Uint32()
+		number     = pathfinder.Flag("number", "Number of characters to roll. Must be greater than 0.").Default("1").Short('n').Int()
 		verbose    = pathfinder.Flag("verbose", "Display additional information.").Default("false").Short('v').Bool()
 	)
 	kingpin.MustParse(pathfinder.Parse(os.Args[1:]))

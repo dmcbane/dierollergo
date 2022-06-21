@@ -4,9 +4,10 @@ import (
 	"encoding/csv"
 	"flag"
 	"fmt"
-	"github.com/dmcbane/dierollergo/pathfinderpkg"
 	"log"
 	"os"
+
+	"github.com/dmcbane/dierollergo/pathfinderpkg"
 )
 
 func main() {
@@ -18,7 +19,7 @@ func main() {
 	verbose := flag.Bool("v", false, "Verbose output.")
 	flag.Parse()
 
-	f, err := os.Create("C:\\Users\\dmcbane\\GoogleDrive\\dev\\go\\src\\github.com\\dmcbane\\dierollergo\\all_ability_scores\\out.csv")
+	f, err := os.Create("out.csv")
 	if err != nil {
 		log.Fatalln("error writing record to csv:", err)
 		panic(err)

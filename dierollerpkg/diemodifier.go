@@ -13,28 +13,32 @@ type DieModifier struct {
 	Amount  int
 }
 
+func DieModifierIsValid(value string) bool {
+	re1, _ := regexp.Compile(DieModifierRegex)
+	matches := re1.FindStringSubmatch(value)
+	return len(matches) == 3
+}
+
 func DieModifierParse(value string) *DieModifier {
 	if value == "" {
 		return new(DieModifier)
-	} else {
-		modtype := DmtFromString(value)
-		re1, _ := regexp.Compile(DieModifierRegex)
-		matches := re1.FindStringSubmatch(value)
-		if len(matches) != 3 {
-			return new(DieModifier)
-		}
-		u, _ := strconv.ParseInt(matches[2], 10, 32)
-		if u != 0 && modtype == DieModifierTypeNull {
-			modtype = DieModifierTypeAdd
-		}
-		return &DieModifier{modtype, int(u)}
 	}
+	modtype := DmtFromString(value)
+	re1, _ := regexp.Compile(DieModifierRegex)
+	matches := re1.FindStringSubmatch(value)
+	if len(matches) != 3 {
+		return new(DieModifier)
+	}
+	u, _ := strconv.Atoi(matches[2])
+	if u != 0 && modtype == DieModifierTypeNull {
+		modtype = DieModifierTypeAdd
+	}
+	return &DieModifier{modtype, int(u)}
 }
 
 func (dm DieModifier) String() string {
 	if dm.ModType == DieModifierTypeNull && dm.Amount == 0 {
 		return ""
-	} else {
-		return fmt.Sprintf("%v%v", dm.ModType, dm.Amount)
 	}
+	return fmt.Sprintf("%v%v", dm.ModType, dm.Amount)
 }

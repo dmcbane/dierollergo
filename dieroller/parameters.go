@@ -28,7 +28,7 @@ func getParameters() (int, int, string, int, int, bool) {
 	flag.Usage = func() {
 		fmt.Fprintf(flag.CommandLine.Output(), "Dieroller — digital dice for role playing gamers.\n\n")
 		fmt.Fprintf(flag.CommandLine.Output(), "Usage: %s <options>\n\n  where the options can be defined by position\n\n", os.Args[0])
-		fmt.Fprintf(flag.CommandLine.Output(), "  [dice [sides [modifier [keep]]]]\n\n  or flags\n\n")
+		fmt.Fprintf(flag.CommandLine.Output(), "  [dice [sides [modifier [keep]]]]\n\n  or by flag\n\n")
 		flag.PrintDefaults()
 		fmt.Fprintf(flag.CommandLine.Output(), "\nExamples:\n  %s 5\n", os.Args[0])
 		fmt.Fprintf(flag.CommandLine.Output(), "  %s 1 10\n", os.Args[0])
@@ -86,13 +86,36 @@ func getParameters() (int, int, string, int, int, bool) {
 		flag.Usage()
 		os.Exit(0)
 	}
+
+	if dice < 1 {
+		fmt.Println(fmt.Errorf("the number of dice to roll must be greater than 0 (%v)", dice))
+		os.Exit(1)
+	}
+
+	if sides < 1 {
+		fmt.Println(fmt.Errorf("the number of sides on the die to roll must be greater than 0 (%v)", sides))
+		os.Exit(2)
+	}
+
+	if keep < 1 {
+		fmt.Println(fmt.Errorf("the number of dice to keep must be greater than 0 (%v)", keep))
+		os.Exit(3)
+	}
+
 	if keep > dice {
 		fmt.Println(fmt.Errorf("the number of dice to keep (%v) cannot exceed the number of dice rolled (%v)", keep, dice))
-		os.Exit(1)
+		os.Exit(4)
 	}
+
 	if modifier != "" && !dierollerpkg.DieModifierIsValid(modifier) {
 		fmt.Println(fmt.Errorf("the modifier is invalid (%s)", modifier))
-		os.Exit(1)
+		os.Exit(5)
 	}
+
+	if iterations < 1 {
+		fmt.Println(fmt.Errorf("the number of times to repeat the rolls must be greater than 0 (%v)", iterations))
+		os.Exit(6)
+	}
+
 	return dice, sides, modifier, keep, iterations, verbose
 }
